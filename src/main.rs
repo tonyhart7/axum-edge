@@ -16,7 +16,8 @@ mod controllers;
 async fn main() -> anyhow::Result<()> {
     tracing_subscriber::registry()
     .with(tracing_subscriber::EnvFilter::new(
-        std::env::var("RUST_LOG").unwrap_or_else(|_| "axum-edge=debug".into()),
+        std::env::var("RUST_LOG")
+            .unwrap_or_else(|_| "example_tracing_aka_logging=debug,tower_http=debug".into()),
     ))
     .with(tracing_subscriber::fmt::layer())
     .init();
