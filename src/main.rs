@@ -43,6 +43,7 @@ async fn main() -> anyhow::Result<()> {
         .layer(Extension(pool))
         .layer(TraceLayer::new_for_http());
 
+
     let addr = SocketAddr::from(([0, 0, 0, 0], 3000));
     tracing::debug!("Listening on {}", addr);
     axum::Server::bind(&addr)

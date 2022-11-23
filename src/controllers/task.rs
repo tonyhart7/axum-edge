@@ -20,7 +20,12 @@ pub async fn all_tasks(Extension(pool): Extension<PgPool>) -> impl IntoResponse 
         .fetch_all(&pool)
         .await.unwrap();
 
-    (StatusCode::OK,Json(task))
+    
+    (StatusCode::OK, Json(json!({
+        "data": task,
+        "message": "Task List",
+        "status": "success"
+    })))
 }
 
 
@@ -70,7 +75,7 @@ pub async fn update_task(Path(id): Path<i32>, Json(task): Json<task::UpdateTask>
         .bind(id)
         .execute(&pool)
         .await.map_err(|_| {
-            CustomError::InternalServerError
+            CustomError::TaskNotFound
         })?;
     
         
