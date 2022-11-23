@@ -1,10 +1,9 @@
 use axum::{
-    extract::{Extension},routing::{get, post, put, delete}, Router,
+    extract::Extension,routing::{get, post, put, delete}, Router,
 };
 
 use sqlx::postgres::PgPoolOptions;
 use std::net::SocketAddr;
-use std::fs;
 use anyhow::Context;
 use tower_http::trace::TraceLayer;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
@@ -16,11 +15,8 @@ mod controllers;
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
 
-    let env = fs::read_to_string(".env").unwrap();
-    let (key, database_url) = env.split_once('=').unwrap();
-
-
-    assert_eq!(key, "DATABASE_URL");
+    let db_connection_str = std::env::var("DATABASE_URL")
+        .unwrap_or_else(|_| "postgres://postgres:password@localhost".to_string());
 
     tracing_subscriber::registry()
         .with(tracing_subscriber::EnvFilter::new(
@@ -32,7 +28,7 @@ async fn main() -> anyhow::Result<()> {
 
     let pool = PgPoolOptions::new()
     .max_connections(50)
-    .connect(&database_url)
+    .connect(&db_connection_str)
     .await
     .context("could not connect to database_url")?;
 
