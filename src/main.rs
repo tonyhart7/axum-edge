@@ -9,9 +9,9 @@ use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 mod controllers;
 mod errors;
 mod models;
-mod route;
+mod routes;
 
-use crate::route as task_route;
+use crate::routes as app_route;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -38,7 +38,7 @@ async fn main() -> anyhow::Result<()> {
             "/api",
             // All public v1 routes will be nested here.
             Router::new()
-                .merge(task_route::task::create_route())
+                .merge(app_route::task::create_route())
         )
         // .nest(
         //     "/v1",
