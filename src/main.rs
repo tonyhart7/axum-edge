@@ -37,19 +37,18 @@ async fn main() -> anyhow::Result<()> {
         .nest(
             "/api",
             // All public v1 routes will be nested here.
+            Router::new().merge(app_route::task::create_route()),
+        )
+        .nest(
+            "/v1",
+            // All public v1 routes will be nested here.
             Router::new()
                 .merge(app_route::task::create_route())
+                .merge(app_route::task::create_route())
+                .merge(app_route::task::create_route())
+                .merge(app_route::task::create_route())
+                .merge(app_route::task::create_route()),
         )
-        // .nest(
-        //     "/v1",
-        //     // All public v1 routes will be nested here.
-        //     Router::new()
-        //         .merge(task_route::task::create_route())
-        //         .merge(task_route::task::create_route())
-        //         .merge(task_route::task::create_route())
-        //         .merge(task_route::task::create_route())
-        //         .merge(task_route::task::create_route()),
-        // )
         .layer(Extension(pool))
         .layer(TraceLayer::new_for_http());
 
