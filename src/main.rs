@@ -22,7 +22,7 @@ async fn main() -> anyhow::Result<()> {
         ))
         .with(tracing_subscriber::fmt::layer())
         .init();
-
+    // lets pun comment on this
     let db_connection_str = std::env::var("DATABASE_URL")
         .unwrap_or_else(|_| "postgres://postgres:password@localhost".to_string());
 

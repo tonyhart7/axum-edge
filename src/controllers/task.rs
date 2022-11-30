@@ -10,7 +10,6 @@ use crate::{errors::CustomError, models::task};
 
 pub async fn all_tasks(Extension(pool): Extension<PgPool>) -> impl IntoResponse {
     let sql = "SELECT * FROM task ".to_string();
-
     let task = sqlx::query_as::<_, task::Task>(&sql)
         .fetch_all(&pool)
         .await
